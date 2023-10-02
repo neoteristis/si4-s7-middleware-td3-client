@@ -1,24 +1,15 @@
 package remote;
 
+import client.Vote;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class Result implements Serializable {
 
-    private String infoCB;
-    public Result(String infoCB) {
-        this.infoCB = infoCB;
+    private List<Vote> clientVotes;
+    public Result(List<Vote> clientVotes) {
+        this.clientVotes = clientVotes;
     }
 
-    @Override
-    public String toString() {
-        return "infoCB : "+this.infoCB;
-    }
-
-    public String getInfoCB() {
-        return infoCB;
-    }
-
-    public void setInfoCB(String infoCB) {
-        this.infoCB = infoCB;
-    }
 }
