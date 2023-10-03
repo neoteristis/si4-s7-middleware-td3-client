@@ -98,10 +98,19 @@ public class Main {
                 votes.add(new Vote(i + 1, voteValue));
             }
             votingService.sendVotes(votes, client);
+            System.out.println("Merci pour ton vote!");
 
             // ============== Résultats ============== //
-            System.out.println("Terminé ! Veux-tu consulter les résultats ? (y/n)");
-
+            while (true) {
+                System.out.println("Veux-tu consulter les résultats ? (y)");
+                if (scanner.nextLine().equals("y")) {
+                    String result = votingService.getResults();
+                    System.out.println(result);
+                    if (! result.equals("L'élection n'est pas terminé, patiente un peu..")) {
+                        System.exit(0);
+                    }
+                }
+            }
 
         } catch (RemoteException e) {
             System.out.println("Erreur avec le serveur");

@@ -9,7 +9,6 @@ import java.rmi.RemoteException;
 import java.util.List;
 
 public interface Service extends Remote {
-    int getVote() throws RemoteException;
 
     List<String> getCandidates() throws RemoteException;
 
