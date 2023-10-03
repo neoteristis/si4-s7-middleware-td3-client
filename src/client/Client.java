@@ -18,8 +18,8 @@ public class Client extends UnicastRemoteObject implements ClientInterface {
     }
 
     @Override
-    public void voter(Vote vote) throws RemoteException {
-        System.out.println(vote);
+    public String getStudentID() {
+        return studentID;
     }
 
     @Override

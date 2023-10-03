@@ -81,7 +81,10 @@ public class Main {
                 votes.add(new Vote(i + 1, voteValue));
             }
             votingService.sendVotes(votes, client);
-            System.out.println("Terminé ! Maintenant attends les résultats...");
+
+            // ============== Résultats ============== //
+            System.out.println("Terminé ! Veux-tu consulter les résultats ? (y/n)");
+
 
         } catch (RemoteException e) {
             System.out.println("Erreur avec le serveur");
