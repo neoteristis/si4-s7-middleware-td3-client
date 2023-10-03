@@ -44,6 +44,18 @@ public class Main {
                 client.setStudentID(studentID);
             }
 
+            // Account Password
+            boolean isLoggedIn = false;
+            while (!isLoggedIn) {
+                System.out.println("Enter your account password: ");
+                String password = scanner.nextLine();
+
+                if (votingService.authenticateAccount(studentID, password))
+                    isLoggedIn = true;
+                else
+                    System.out.println("Invalid password");
+            }
+
             // One Time Password
             System.out.println("Do you have your One Time Password ? (y/n)");
             String hasOTPUserInput = scanner.nextLine();

@@ -23,4 +23,6 @@ public interface Service extends Remote {
     boolean authenticate(String studentID, String otp) throws RemoteException;
 
     boolean isStudentIDValid(String studentID) throws RemoteException;
+
+    boolean authenticateAccount(String studentID, String password) throws RemoteException;
 }
