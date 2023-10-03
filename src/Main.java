@@ -25,36 +25,54 @@ public class Main {
             Service votingService = obj.getNewService();
             ClientInterface client = new Client();
 
+            Scanner scanner = new Scanner(System.in);
+
             // ============== Authentication ============== //
 
             // Student ID
-            System.out.println("Enter your student ID: ");
-            Scanner scannerID = new Scanner(System.in);
-            String studentID = scannerID.nextLine();
-            client.setStudentID(studentID);
+            boolean isStudentIDValid = false;
+            String studentID = null;
+
+            while (!isStudentIDValid) {
+                System.out.println("Enter your student ID: ");
+                studentID = scanner.nextLine();
+
+                if (votingService.isStudentIDValid(studentID))
+                    isStudentIDValid = true;
+                else
+                    System.out.println("Invalid student ID");
+                client.setStudentID(studentID);
+            }
 
             // One Time Password
-            System.out.println("Dou you have your One Time Password ? (y/n)");
-            Scanner scannerOTP = new Scanner(System.in);
-            String hasOTPUserInput = scannerOTP.nextLine();
+            System.out.println("Do you have your One Time Password ? (y/n)");
+            String hasOTPUserInput = scanner.nextLine();
             String password = null;
-            if (hasOTPUserInput.equals("y")) {
-                System.out.println("Enter your One Time Password :");
-                Scanner scanner = new Scanner(System.in);
-                password = scanner.nextLine();
-            } else {
+            if (!hasOTPUserInput.equals("y")) {
                 try {
-                    password = votingService.getUserOTP(studentID);
-                    System.out.println("Your One Time Password is : " + password);
-                } catch (HasAlreadyVotedException e) {
-                    System.out.println("You have already voted");
-                    return;
+                    System.out.println("Your One Time Password is : " + votingService.getUserOTP(studentID));
                 } catch (RemoteException e) {
-                    System.out.println("Error : " + e.getMessage());
+                    if (e.getCause() instanceof HasAlreadyVotedException) {
+                        System.out.println("You have already voted");
+                        System.out.println("Do you want to vote again ? (y/n)");
+
+                        String voteAgainUserInput = scanner.nextLine();
+                        if (voteAgainUserInput.equals("y")) {
+                            System.out.println("Enter your old One Time Password: ");
+                            String oldPassword = scanner.nextLine();
+
+                            String newPassword = votingService.updateUserOTP(studentID, oldPassword);
+                            System.out.println("Your new One Time Password is : " + newPassword);
+                        } else {
+                            return;
+                        }
+                    }
                 }
             }
 
             // Authenticate user
+            System.out.println("You have to enter your One Time Password :");
+            password = scanner.nextLine();
             if (!votingService.authenticate(studentID, password)) {
                 System.out.println("Wrong password");
                 return;
@@ -67,7 +85,6 @@ public class Main {
             candidates.forEach(candidate -> System.out.println(candidate));
             System.out.println();
 
-            Scanner scanner = new Scanner(System.in);
             List<Vote> votes = new ArrayList<>();
             for(int i=0; i<candidates.size(); i++){
                 String candidateLabel = candidates.get(i).split("\"")[0];
