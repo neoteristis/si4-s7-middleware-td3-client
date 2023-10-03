@@ -69,8 +69,9 @@ public class Main {
 
             Scanner scanner = new Scanner(System.in);
             List<Vote> votes = new ArrayList<>();
-            for (int i = 0; i < candidates.size(); i++) {
-                System.out.println("Vote pour candidat " + Integer.toString(i + 1) + ":");
+            for(int i=0; i<candidates.size(); i++){
+                String candidateLabel = candidates.get(i).split("\"")[0];
+                System.out.println("Vote pour candidat " + candidateLabel);
                 int voteValue = scanner.nextInt();
                 if (voteValue < 0 || voteValue > 3) {
                     System.out.println("Le vote est une valeur entre 0 et 3");
@@ -80,6 +81,7 @@ public class Main {
                 votes.add(new Vote(i + 1, voteValue));
             }
             votingService.sendVotes(votes, client);
+            System.out.println("Terminé ! Maintenant attends les résultats...");
 
         } catch (RemoteException e) {
             System.out.println("Erreur avec le serveur");
